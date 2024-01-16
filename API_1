@@ -1,3 +1,8 @@
+#This Python script retrieves weather information for two cities, Berlin and Barcelona, using the OpenWeatherMap API. 
+#The API key is loaded from the 'Weather_API_Key' environment variable. 
+#The script makes API requests for each city, extracts relevant information such as temperature, feels-like temperature, humidity, sunrise, sunset, and wind speed, and then prints the formatted results for each city.
+#The temperature is converted from Kelvin to Celsius, and the sunrise and sunset times are converted from Unix timestamps to human-readable time format using helper functions. 
+
 import os
 from datetime import datetime
 import requests
