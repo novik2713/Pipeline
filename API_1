@@ -1,0 +1,47 @@
+import os
+from datetime import datetime
+import requests
+from dotenv import load_dotenv
+load_dotenv()
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
+#API_KEY = open('api_key.txt', 'r').read().strip()another way
+API_KEY = os.getenv('Weather_API_Key')
+
+CITY1 = "Berlin"
+url1 = BASE_URL + 'q=' + CITY1 + '&appid=' + API_KEY
+response1 = requests.get(url1).json()
+
+CITY2 = "Barcelona"
+url2 = BASE_URL + 'q=' + CITY2 + '&appid=' + API_KEY
+response2 = requests.get(url2).json()
+
+print(response1, response2)
+print('=========')
+
+#functions and choosing what to show
+def kelvin_to_celsius(kelvin):
+    return kelvin - 273.15
+
+def unix_timestamp_to_datetime(timestamp):
+    return datetime.utcfromtimestamp(timestamp).strftime('%H:%M:%S')
+cities = [CITY1, CITY2]
+responses = [response1, response2]
+
+for city, response in zip(cities, responses):
+    temp_kelvin = response['main']['temp']
+    temp_celsius = kelvin_to_celsius(temp_kelvin)
+
+    feels_like_kelvin = response['main']['feels_like']
+    feels_like_celsius = kelvin_to_celsius(feels_like_kelvin)
+
+    humidity = response['main']['humidity']
+    sunrise_timestamp = response['sys']['sunrise']
+    sunset_timestamp = response['sys']['sunset']
+    wind_speed = response['wind']['speed']
+
+    print(f'Temperature in {city}: {temp_celsius:.2f}C')
+    print(f'Feels like temperature in {city}: {feels_like_celsius:.2f}C')
+    print(f'Humidity in {city}: {humidity}%')
+    print(f'Sunrise in {city}: {unix_timestamp_to_datetime(sunrise_timestamp)}')
+    print(f'Sunset in {city}: {unix_timestamp_to_datetime(sunset_timestamp)}')
+    print(f'Wind speed in {city}: {wind_speed} m/s')
