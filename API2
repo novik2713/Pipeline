@@ -1,0 +1,18 @@
+import os
+from datetime import datetime
+import requests
+from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+import pandas as pd
+BASE_URL = "https://api.openweathermap.org/data/2.5/forecast?"
+API_KEY = open('api_key.txt', 'r').read().strip()
+CITY1 = "Berlin"
+url1 = BASE_URL + 'q=' + CITY1 + '&appid=' + API_KEY
+response1 = requests.get(url1).json()
+
+CITY2 = "Barcelona"
+url2 = BASE_URL + 'q=' + CITY2 + '&appid=' + API_KEY
+response2 = requests.get(url2).json()
+
+print(response1, response2)
+print('=========')
