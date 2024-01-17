@@ -16,3 +16,33 @@ response2 = requests.get(url2).json()
 
 print(response1, response2)
 print('=========')
+
+cities = [CITY1, CITY2]
+responses = [response1, response2]
+
+data_list = []
+for city, response in zip(cities, responses):
+    for item in response['list']: # Iterate over all items in the 'list' key
+        temp_kelvin = item['main']['temp']
+        temp_celsius = kelvin_to_celsius(temp_kelvin)
+
+        feels_like_kelvin = item['main']['feels_like']
+        feels_like_celsius = kelvin_to_celsius(feels_like_kelvin)
+
+        humidity = item['main']['humidity']
+        weather_desc = item['weather'][0]['description']
+        wind_speed = item['wind']['speed']
+        timestamp = item['dt_txt']
+
+        data_list.append({
+            'Timestamp': timestamp,
+            'City': city,
+            'Temperature_Celsius': temp_celsius,
+            'Feels_Like_Celsius': feels_like_celsius,
+            'Humidity': humidity,
+            'Weather_Description': weather_desc,
+            'Wind_Speed': wind_speed
+        })
+
+weather_df = pd.DataFrame(data_list)
+weather_df.to_csv('weather_data.csv', index=False)
