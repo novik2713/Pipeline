@@ -1,0 +1,22 @@
+#VSCOde file
+
+from main2 import get_data
+import gspread
+
+def save_data():
+    data = get_data()
+    gc = gspread.service_account(filename=".\service_account.json")
+
+    wks = gc.open_by_key("").sheet1
+    if wks.row_count == 0:
+        headers = ["Timestamp", "City", "Temperature_Celsius", "Feels_Like_Celsius", "Humidity", "Weather_Description", "Wind_Speed"]
+        wks.append_row(headers)
+
+    for data_dict in data:
+        row = [data_dict["Timestamp"], data_dict["City"], data_dict["Temperature_Celsius"], 
+               data_dict["Feels_Like_Celsius"], data_dict["Humidity"], data_dict["Weather_Description"], 
+               data_dict["Wind_Speed"]]
+        wks.append_row(row)
+
+save_data()
+
