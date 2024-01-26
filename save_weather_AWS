@@ -1,0 +1,25 @@
+import json
+import gspread
+
+def save_data(event, context):
+    print("Received event:", event)
+    gc = gspread.service_account(filename="./service_account.json")
+    wks = gc.open_by_key("").sheet1
+
+    if wks.row_count == 0:
+        headers = ["Timestamp", "City", "Temperature_Celsius", "Feels_Like_Celsius", "Humidity", "Weather_Description", "Wind_Speed"]
+        wks.append_row(headers)
+
+    if isinstance(event, dict):
+        row = [
+            event.get("Timestamp", ""),
+            event.get("City", ""), 
+            event.get("Temperature_Celsius", ""), 
+            event.get("Feels_Like_Celsius", ""), 
+            event.get("Humidity", ""), 
+            event.get("Weather_Description", ""), 
+            event.get("Wind_Speed", "")
+        ]
+        wks.append_row(row)
+    else:
+        print(f"Error: Function expected a dictionary, but received: {type(event)}")
